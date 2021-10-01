@@ -1,0 +1,22 @@
+{%load static%}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Artel</title>
+    <link href="{% static 'scc/styles.css' %}" rel="stylesheet" />
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="max-w-7xl mx-auto bg ">
+{% include 'shlak/navbar.html' %}
+    {%  block content %}
+    {% endblock content %}
+</div>
+
+
+
+</body>
+</html>
