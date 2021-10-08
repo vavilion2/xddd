@@ -4,6 +4,9 @@ from .views import LandingView,ZayavkaDetali,ZayavkaSpisok,\
     ZayavkaSpisokC,ZayavkaDetaliC,ZayavkaUpdate,zayavka_create_c_def,\
     ZayavkaUpdateR #Asda ZayavkaCreateC
 
+from rest_framework.urlpatterns import format_suffix_patterns
+from . import restviews
+
 app_name='dungeon'
 
 urlpatterns=[
@@ -21,7 +24,11 @@ urlpatterns=[
     path('spisok_c/create',zayavka_create_c_def,name='zayavka-create-c'),
     path('<int:pk>/spisok_c/detali',ZayavkaDetaliC.as_view(),name='zayavka-detali-c'),
 
-
     #path('spisok_c/create',SS,name='zayavka-create-c'),
+    #path('xd/', restviews.ZayavkaRList.as_view()),
+    #path('xd/<int:pk>/', restviews.ZayavkaRDetail.as_view()),
+
+
 
 ]
+urlpatterns = format_suffix_patterns(urlpatterns)

@@ -5,6 +5,9 @@ from .forms import ZayavkaForma,ZayavkaForma1,ZayavkaForma2,ZayavkaForma3,Zayavk
 from django.views.decorators.csrf import csrf_protect
 from .perm import ManDostup,CliDostup,RabDostup,LoginRequiredMixin,AccessMixin
 from django.utils.decorators import method_decorator
+from django.core.mail import EmailMessage,send_mail
+from django.conf import settings
+from django.template.loader import render_to_string
 
 class LandingView(generic.TemplateView):
     template_name='shlak/landing.html'
@@ -120,7 +123,6 @@ def zayavka_create_c_def(request):
 
 
 
-
 class ZayavkaDetaliC(CliDostup,generic.DetailView):
     template_name = ('client_interf/zayavka_detali_c.html')
     queryset = Zayavka.objects.filter()
@@ -134,3 +136,15 @@ class ZayavkaUpdateR(RabDostup, generic.UpdateView):
 
     def get_success_url(self):
         return reverse ('zayavki:zayavka-spisok-r')
+
+
+def qwer(request):
+    template=render_to_string('shlak/send_mail',{'name':request.user.username})
+    mail=send_mail(
+        'subj',
+        template,
+        settings.EMAIL_HOST_USER,
+        ['tima2103b@gmail.com'],
+        fail_silently=False,
+    )
+    return mail

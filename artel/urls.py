@@ -19,4 +19,5 @@ urlpatterns = [
     path('reset-confirm/<uidb64>/<token>', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset-complete', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
+    path('api/',include('api.urls',namespace='api')),
 ]

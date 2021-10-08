@@ -9,11 +9,21 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import environ
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+env=environ.Env()
+
+READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
+if READ_DOT_ENV_FILE:
+    # OS environment variables take precedence over variables from .env
+    env.read_env(str(BASE_DIR / ".env"))
+#DATABASES = {"default": env.db("DATABASE_URL")}
+#DATABASES["default"]["ATOMIC_REQUESTS"] = True
+
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,12 +35,13 @@ SECRET_KEY = 'django-insecure-=v-)eh*2%c=y$v%2ul&6$&hd$6=e+u!dms^c9y2i@mnsf4$@7-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','0.0.0.0','127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'api',
     'dungeon',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -74,12 +86,27 @@ WSGI_APPLICATION = 'artel.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+
+DATABASES = {"default": env.db("DATABASE_URL")}
+DATABASES["default"]["ATOMIC_REQUESTS"] = True
+
+
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+#}
+#DATABASES = {
+#        'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': 'postgr_db',
+#        'USER': 'postgres',
+#        'PASSWORD': '300master',
+#        'HOST': 'localhost',
+#       # 'PORT': '5432'
+#    }
+#}
 
 
 # Password validation
@@ -133,3 +160,10 @@ AUTH_USER_MODEL='dungeon.User'
 EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 LOGIN_REDIRECT_URL='/'
 LOGIN_URL='/login'
+EMAIL_HOST_USER='van@dungeon.com'
+EMAIL_HOST_PASSWORD='228007'
+
+# Celery Configuration Options
+CELERY_TIMEZONE = "Europe/Moscow"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
